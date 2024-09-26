@@ -1,0 +1,4 @@
+task_details.json
+results/*
+!results/.gitkeep
+node_modules

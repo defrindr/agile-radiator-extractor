@@ -1,0 +1,14 @@
+{
+  "name": "agile-radiator-extractor",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "author": "Defri Indra Mahardika",
+  "license": "ISC",
+  "dependencies": {
+    "fs-promise": "^2.0.3",
+    "jsdom": "^25.0.1"
+  }
+}
