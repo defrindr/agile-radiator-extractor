@@ -1,8 +1,6 @@
-const jsDom = require('jsdom');
-const fs = require('fs-promise');
-const { JSDOM } = jsDom;
-
-let radiatorUrl = "https://agileteknik.com/task-radiator/share/1370/25d6c550-1c59-4492-bb1b-b7ed7dcab7a9?search=&perPage=50&sortField=identifier&sortDirection=asc";
+import fs from 'fs-promise'
+import { JSDOM } from 'jsdom';
+import inquirer from 'inquirer';
 
 // 1. Fetch the task radiator data from the provided URL.
 const fetchFromURL = async (url) => {
@@ -33,7 +31,7 @@ function htmlDecode(input) {
     return doc.serialize().replace("<html><head></head><body>", "").replace("</body></html>", "");
 }
 
-const fetchAndExtractData = async () => {
+const fetchAndExtractData = async (radiatorUrl) => {
     let html = await fetchFromURL(radiatorUrl);
     let items = await parseHTML(html);
 
@@ -116,21 +114,34 @@ const ExtractMindmap = async (mindmap, creator, type, similarity) => {
 
 
 const main = async () => {
-    // await fetchAndExtractData();
-    console.log('Task details fetched and saved.');
-    let taskSimilarities = await CheckSimiliarities();
-    console.log('Similarity check performed.');
-
-    let taskKeys = Object.keys(taskSimilarities);
-    for (let key of taskKeys) {
-        let similarTasks = taskSimilarities[key];
-        console.log(`\n\nMindmap: ${key}`);
-        for (let task of similarTasks) {
-            console.log(`Task: ${task.name}`);
-            console.log(`Similarity: ${task.similarity}`);
-            await ExtractMindmap(task.mindMap?.[0] ?? null, task.name, key, task.similarity);
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "url",
+            message: "Please input URL radiator ?",
+        },
+    ]).then(async (answers) => {
+        if (!answers.url) {
+            console.log('No URL provided. Exiting.');
+            return;
         }
-    }
+
+        await fetchAndExtractData(answers.url);
+        console.log('Task details fetched and saved.');
+        let taskSimilarities = await CheckSimiliarities();
+        console.log('Similarity check performed.');
+
+        let taskKeys = Object.keys(taskSimilarities);
+        for (let key of taskKeys) {
+            let similarTasks = taskSimilarities[key];
+            console.log(`\n\nMindmap: ${key}`);
+            for (let task of similarTasks) {
+                console.log(`Task: ${task.name}`);
+                console.log(`Similarity: ${task.similarity}`);
+                await ExtractMindmap(task.mindMap?.[0] ?? null, task.name, key, task.similarity);
+            }
+        }
+    })
 
 
 

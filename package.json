@@ -2,6 +2,7 @@
   "name": "agile-radiator-extractor",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "start": "node main.js"
   },
@@ -9,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "fs-promise": "^2.0.3",
+    "inquirer": "^11.0.2",
     "jsdom": "^25.0.1"
   }
 }
