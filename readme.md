@@ -29,3 +29,19 @@ npm install
 ```
 npm run start
 ```
+
+## Results
+
+1. Running program
+
+    ![Running Program](./images/run.png)
+
+2. Result files
+
+    ![Result file](./images/list.png)
+    
+    Format file {similarity}.{name}.txt
+
+3. Mindmap file
+
+    ![Mindmap](./images/mindmap.png)
